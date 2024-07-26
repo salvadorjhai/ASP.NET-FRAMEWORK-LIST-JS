@@ -1,0 +1,189 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    List<Newtonsoft.Json.Linq.JToken> jo = new List<Newtonsoft.Json.Linq.JToken>();
+
+    jo.AddRange(Newtonsoft.Json.Linq.JRaw.Parse(File.ReadAllText(Server.MapPath("~/Content/_usercontent/bMembers.json"))));
+    jo.AddRange(Newtonsoft.Json.Linq.JRaw.Parse(File.ReadAllText(Server.MapPath("~/Content/_usercontent/bMembers2.json"))));
+    jo.AddRange(Newtonsoft.Json.Linq.JRaw.Parse(File.ReadAllText(Server.MapPath("~/Content/_usercontent/bMembers3.json"))));
+    jo.AddRange(Newtonsoft.Json.Linq.JRaw.Parse(File.ReadAllText(Server.MapPath("~/Content/_usercontent/bMembers4.json"))));
+    jo.AddRange(Newtonsoft.Json.Linq.JRaw.Parse(File.ReadAllText(Server.MapPath("~/Content/_usercontent/bMembers6.json"))));
+
+    //jo.AddRange(Newtonsoft.Json.Linq.JRaw.Parse(File.ReadAllText(Server.MapPath("~/Content/_usercontent/bMembers.json"))));
+    //jo.AddRange(Newtonsoft.Json.Linq.JRaw.Parse(File.ReadAllText(Server.MapPath("~/Content/_usercontent/bMembers2.json"))));
+    //jo.AddRange(Newtonsoft.Json.Linq.JRaw.Parse(File.ReadAllText(Server.MapPath("~/Content/_usercontent/bMembers3.json"))));
+    //jo.AddRange(Newtonsoft.Json.Linq.JRaw.Parse(File.ReadAllText(Server.MapPath("~/Content/_usercontent/bMembers4.json"))));
+    //jo.AddRange(Newtonsoft.Json.Linq.JRaw.Parse(File.ReadAllText(Server.MapPath("~/Content/_usercontent/bMembers6.json"))));
+
+    //jo.AddRange(Newtonsoft.Json.Linq.JRaw.Parse(File.ReadAllText(Server.MapPath("~/Content/_usercontent/bMembers.json"))));
+    //jo.AddRange(Newtonsoft.Json.Linq.JRaw.Parse(File.ReadAllText(Server.MapPath("~/Content/_usercontent/bMembers2.json"))));
+    //jo.AddRange(Newtonsoft.Json.Linq.JRaw.Parse(File.ReadAllText(Server.MapPath("~/Content/_usercontent/bMembers3.json"))));
+    //jo.AddRange(Newtonsoft.Json.Linq.JRaw.Parse(File.ReadAllText(Server.MapPath("~/Content/_usercontent/bMembers4.json"))));
+    //jo.AddRange(Newtonsoft.Json.Linq.JRaw.Parse(File.ReadAllText(Server.MapPath("~/Content/_usercontent/bMembers6.json"))));
+
+    //jo.AddRange(Newtonsoft.Json.Linq.JRaw.Parse(File.ReadAllText(Server.MapPath("~/Content/_usercontent/bMembers.json"))));
+    //jo.AddRange(Newtonsoft.Json.Linq.JRaw.Parse(File.ReadAllText(Server.MapPath("~/Content/_usercontent/bMembers2.json"))));
+    //jo.AddRange(Newtonsoft.Json.Linq.JRaw.Parse(File.ReadAllText(Server.MapPath("~/Content/_usercontent/bMembers3.json"))));
+    //jo.AddRange(Newtonsoft.Json.Linq.JRaw.Parse(File.ReadAllText(Server.MapPath("~/Content/_usercontent/bMembers4.json"))));
+    //jo.AddRange(Newtonsoft.Json.Linq.JRaw.Parse(File.ReadAllText(Server.MapPath("~/Content/_usercontent/bMembers6.json"))));
+
+}
+
+<style>
+    .pagination li:not(:first-child) > a {
+        margin-left: -1px;
+    }
+
+    .pagination li.active > a {
+        z-index: 3;
+        color: #fff;
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+
+    .pagination li > a {
+        padding: .375rem .75rem;
+        position: relative;
+        display: block;
+        color: #0d6efd;
+        text-decoration: none;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+
+    .sort.asc::after {
+        content: "\002B9D";
+        padding-left: 3px;
+    }
+
+    .sort.desc::after {
+        content: "\002B9F";
+        padding-left: 3px
+    }
+
+</style>
+
+<main>
+
+    <div id="ljs">
+        <div class="row gy-2 gx-3 align-items-center">
+            <div class="col-auto">
+                <input class="search form-control" placeholder="normal search ... " />
+            </div>
+            <div class="col-auto">
+                <input class="fuzzy-search form-control" placeholder="fuzzy search ... " />
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-primary sort" data-sort="name">Sort by name</button>
+                <button type="button" class="btn btn-primary sort" data-sort="businessname">Sort by business name</button>
+            </div>
+            <div class="col-auto">
+            </div>
+        </div>
+        <hr />
+        <div class="list mt-3 row align-items-center">
+
+            @for (int i = 0; i < jo.Count(); i++)
+            {
+                <div class="col-lg-6 col-sm-12 mb-3 ">
+                    <div class="card rounded shadow-sm ">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <img class="img-thumbnail rounded" height="80px" width="80px" src="~/Content/_usercontent/149071.png" />
+                                </div>
+                                <div class="col">
+                                    <h3 class="name">@jo.ElementAt(i).SelectToken("fname").ToString() @jo.ElementAt(i).SelectToken("lname").ToString()</h3>
+                                    <span class="badge bg-primary">@jo.ElementAt(i).SelectToken("memberid").ToString()</span>
+                                    <div class="businessname">@jo.ElementAt(i).SelectToken("businessname").ToString()</div>
+                                    @{
+                                        string s1 = "";
+                                        if (@jo.ElementAt(i).SelectToken("statusid").ToString() == "8")
+                                        {
+                                            s1 = "<span class=\"badge bg-success\">active</span>";
+                                        }
+                                        else if (@jo.ElementAt(i).SelectToken("statusid").ToString() == "9")
+                                        {
+                                            s1 = "<span class=\"badge bg-danger\">deleted</span>";
+                                        }
+                                        else
+                                        {
+                                            s1 = "<span class=\"badge bg-info\">others</span>";
+                                        }
+                                    }
+
+                                    <div>@Html.Raw(s1) | Lorem | Lorem lorem </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+
+       
+        <div class="row">
+            <div class="col">
+                <div id="pageinfo"></div>
+            </div>
+            <div class="col align-items-end">
+                <ul class="pagination"></ul>
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            loadDatalist();
+        });
+
+        var ljs; 
+
+        function loadDatalist() {
+            var options = {
+                valueNames: ['name', 'businessname'], // must be present on your class to be displayed
+                page: 8,
+                pagination: {
+                    paginationClass: "pagination",
+                    name: "pagination",
+                    innerWindow: 3,
+                    outerWindow: 3,
+                    left: 2,
+                    right: 2,
+                },
+            };
+
+            ljs = new List('ljs', options);
+
+            ljs.on('updated', function () {
+                updateInfo();
+            });
+
+            updateInfo();
+        }
+
+        function updateInfo() {
+            var currentPage = ljs.i;
+            var totalPages = ljs.matchingItems.length / ljs.page;
+            var totalRecords = ljs.size();
+            var filteredRecords = ljs.matchingItems.length;
+
+            if (ljs.searched) {
+                document.getElementById('pageinfo').textContent = `Page ${currentPage} of ${Math.ceil(totalPages)} (found ${filteredRecords} out of ${totalRecords} records.)`;
+
+                if (filteredRecords == 0) {
+                    document.getElementById('pageinfo').textContent = `No records found.`;
+                }
+
+            } else {
+                document.getElementById('pageinfo').textContent = `Page ${currentPage} of ${Math.ceil(totalPages)} - ${totalRecords} records.`;
+            }
+        }
+
+    </script>
+}
